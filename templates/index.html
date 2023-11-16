@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="30">
+    <title>Stock Price Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Stock Price Prediction</h1>
+        <p>Actual Price: <span id="actual_price"></span></p>
+        <p>Previous Price: <span id="previous_price"></span></p>
+        <p>Prediction for the Next 30 Seconds: <span id="next_30_seconds_prediction"></span></p>
+    </div>
+
+    <script>
+        function updatePrices() {
+            fetch('/update_prices')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('actual_price').innerText = data.actual_price;
+                    document.getElementById('previous_price').innerText = data.previous_price;
+                    document.getElementById('next_30_seconds_prediction').innerText = data.next_30_seconds_prediction;
+                });
+        }
+
+        // Update prices on page load
+        updatePrices();
+
+        // Schedule updates every 30 seconds
+        setInterval(updatePrices, 30000);
+    </script>
+</body>
+</html>
